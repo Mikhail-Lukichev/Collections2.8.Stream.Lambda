@@ -6,8 +6,8 @@ public class Employee {
     public static int count = 0;
     private String fistName;
     private String lastName;
-    private int department;
-    private int salary;
+    private Integer department;
+    private Integer salary;
 
     public Employee(String firstName, String lastName, int department, int salary) {
         this.fistName = firstName;
@@ -25,11 +25,11 @@ public class Employee {
         return lastName;
     }
 
-    public int getDepartment() {
+    public Integer getDepartment() {
         return department;
     }
 
-    public int getSalary() {
+    public Integer getSalary() {
         return salary;
     }
 
