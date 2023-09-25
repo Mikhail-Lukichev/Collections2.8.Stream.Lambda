@@ -31,12 +31,12 @@ public class DepartmentController {
 
     @GetMapping(path = "/all")
     public List<Employee> allEmployeesInDepartment(@RequestParam(value = "departmentId") Optional<Integer> departmentId) {
+        List<Employee> result;
         if (departmentId.isPresent()) {
-            List<Employee> result = departmentService.getEmployeesByDepartment(departmentId.get());
-            return result;
+            result = departmentService.getEmployeesByDepartment(departmentId.get());
         } else {
-            List<Employee> result = departmentService.getAllEmployees();
-            return result;
+            result = departmentService.getAllEmployees();
         }
+        return result;
     }
 }
