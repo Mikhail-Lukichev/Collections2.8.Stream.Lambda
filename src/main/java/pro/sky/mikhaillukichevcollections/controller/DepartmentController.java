@@ -8,10 +8,11 @@ import pro.sky.mikhaillukichevcollections.model.Employee;
 import pro.sky.mikhaillukichevcollections.service.DepartmentService;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/departments/")
+@RequestMapping("/departments")
 public class DepartmentController {
     private final DepartmentService departmentService;
 
@@ -29,14 +30,13 @@ public class DepartmentController {
         return departmentService.findHighestSalaryEmployeeInDepartment(departmentId);
     }
 
-    @GetMapping(path = "/all")
-    public List<Employee> allEmployeesInDepartment(@RequestParam(value = "departmentId") Optional<Integer> departmentId) {
-        List<Employee> result;
-        if (departmentId.isPresent()) {
-            result = departmentService.getEmployeesByDepartment(departmentId.get());
-        } else {
-            result = departmentService.getAllEmployees();
-        }
-        return result;
+    @GetMapping(value = "/all", params = {"departmentId"})
+    public List<Employee> getEmployees(@RequestParam(value = "departmentId") int departmentId) {
+        return departmentService.getEmployeesByDepartment(departmentId);
+    }
+
+    @GetMapping(value = "/all")
+    public Map<Integer, List<Employee>> getEmployees() {
+        return departmentService.getAllEmployees();
     }
 }

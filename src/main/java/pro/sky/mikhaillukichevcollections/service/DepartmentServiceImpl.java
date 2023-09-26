@@ -3,9 +3,13 @@ package pro.sky.mikhaillukichevcollections.service;
 import org.springframework.stereotype.Service;
 import pro.sky.mikhaillukichevcollections.model.Employee;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
 
 @Service
 public class DepartmentServiceImpl implements DepartmentService{
@@ -20,27 +24,23 @@ public class DepartmentServiceImpl implements DepartmentService{
         return employeeService.getEmployees().values().stream().filter(employee -> employee.getDepartment().equals(department)).collect(Collectors.toList());
     }
 
-    public List<Employee> getAllEmployees() {
-        return employeeService.getEmployees().values().stream().sorted((e1, e2)->e1.getDepartment().compareTo(e2.getDepartment())).collect(Collectors.toList());
+    public Map<Integer, List<Employee>> getAllEmployees() {
+        return employeeService.getEmployees().values().stream()
+                .collect(Collectors.groupingBy(Employee::getDepartment));
     }
 
     public Employee findLowestSalaryEmployeeInDepartment(int department) {
         return employeeService.getEmployees().values().stream()
             .filter(employee -> employee.getDepartment().equals(department))
-            .min(Employee::getSalary)
-            .orElseThrow(() -> throw new RuntimeException("Min salary employee is not found for department " + department))
+            .min(Comparator.comparingInt(Employee::getSalary))
+            .orElseThrow(() -> new RuntimeException("Min salary employee is not found for department " + department));
     }
 
     public Employee findHighestSalaryEmployeeInDepartment(int department) {
-        final List<Employee> employeesByDepartment = this.getEmployeesByDepartment(department);
-        final List<Integer> salaries = employeesByDepartment.stream().map(employee -> employee.getSalary()).collect(Collectors.toList());
-        Optional<Integer> maxSalary = salaries.stream().max((i, j) -> i.compareTo(j));
-        Optional<Employee> maxSalaryEmployee = employeesByDepartment.stream().filter(employee -> employee.getSalary().equals(maxSalary.get())).findAny();
-        if (maxSalaryEmployee.isPresent()) {
-            return maxSalaryEmployee.get();
-        } else {
-            throw new RuntimeException("Max salary employee is not found for department " + department);
-        }
+        return employeeService.getEmployees().values().stream()
+                .filter(employee -> employee.getDepartment() == department)
+                .max(Comparator.comparingInt(Employee::getSalary))
+                .orElseThrow(() -> new RuntimeException("Max salary employee is not found for department " + department));
     }
 
 }

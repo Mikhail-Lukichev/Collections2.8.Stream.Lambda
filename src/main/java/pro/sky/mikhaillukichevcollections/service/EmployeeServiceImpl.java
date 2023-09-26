@@ -16,14 +16,10 @@ import java.util.stream.Collectors;
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final static int EMPLOYEE_MAX_COUNT = 20;
-    //    List<Employee> employees = new ArrayList<>();
+
     Map<String, Employee> employees = new HashMap<String, Employee>();
 
     public Map<String, Employee> getEmployees() {
-        return employees;
-    }
-
-    public Map<String, Employee> displayEmployees() {
         return employees;
     }
 
@@ -65,13 +61,5 @@ public class EmployeeServiceImpl implements EmployeeService {
         this.addEmployee("David", "Jones", 2, 22000);
         this.addEmployee("Tatiana", "Barker", 2, 27000);
         this.addEmployee("Nicola", "Gilmore", 2, 23000);
-    }
-
-    public void test() {
-        employees.values().stream().forEach(employee -> {
-            System.out.println(employee.toString());
-        });
-        List<String> strings = employees.values().stream().map(employee -> employee.getFistName()).collect(Collectors.toList());
-
     }
 }

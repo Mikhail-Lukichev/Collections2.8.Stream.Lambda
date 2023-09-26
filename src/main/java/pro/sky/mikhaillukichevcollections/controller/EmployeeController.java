@@ -7,7 +7,7 @@ import pro.sky.mikhaillukichevcollections.service.EmployeeService;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/employee/")
+@RequestMapping("/employee")
 public class EmployeeController {
 
     private final EmployeeService employeeService;
@@ -18,7 +18,7 @@ public class EmployeeController {
 
     @GetMapping
     public Map<String, Employee> displayEmployees() {
-        return employeeService.displayEmployees();
+        return employeeService.getEmployees();
     }
 
     @GetMapping(path = "/add")
