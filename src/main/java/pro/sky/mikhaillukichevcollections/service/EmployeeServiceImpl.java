@@ -10,9 +10,6 @@ import pro.sky.mikhaillukichevcollections.model.Employee;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
