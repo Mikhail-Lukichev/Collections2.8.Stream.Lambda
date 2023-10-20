@@ -1,6 +1,8 @@
 package pro.sky.mikhaillukichevcollections.service;
 
+import org.apache.commons.lang3.StringUtils;
 import pro.sky.mikhaillukichevcollections.exception.EmployeeAlreadyAddedException;
+import pro.sky.mikhaillukichevcollections.exception.EmployeeBadNameException;
 import pro.sky.mikhaillukichevcollections.exception.EmployeeNotFoundException;
 import org.springframework.stereotype.Service;
 import pro.sky.mikhaillukichevcollections.exception.EmployeeStorageIsFullException;
@@ -8,9 +10,6 @@ import pro.sky.mikhaillukichevcollections.model.Employee;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -24,12 +23,18 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     public Employee addEmployee(String firstName, String lastName, int department, int salary) {
+        if (!StringUtils.isAlpha(firstName))
+            throw new EmployeeBadNameException("Invalid first name " + firstName + ". Cannot add an employee");
+        if (!StringUtils.isAlpha(lastName))
+            throw new EmployeeBadNameException("Invalid last name " + lastName + ". Cannot add an employee");
         if (employees.size() >= EMPLOYEE_MAX_COUNT) {
             throw new EmployeeStorageIsFullException("Exception: adding employee " + firstName + " " + lastName + ". Cannot add employee. Storage is full");
         }
         if (employees.containsKey(firstName + lastName)) {
             throw new EmployeeAlreadyAddedException("Exception: adding employee " + firstName + " " + lastName + ". Such employee has been already added");
         }
+        firstName = StringUtils.capitalize(firstName);
+        lastName = StringUtils.capitalize(lastName);
         Employee employee = new Employee(firstName, lastName, department, salary);
         employees.put(firstName + lastName, employee);
         return employee;
