@@ -9,7 +9,6 @@ import pro.sky.mikhaillukichevcollections.model.Employee;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,8 +18,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     Map<String, Employee> employees = new HashMap<String, Employee>();
 
+    public int getEmployeeMaxCount() {
+        return EMPLOYEE_MAX_COUNT;
+    }
+
     public Map<String, Employee> getEmployees() {
         return employees;
+    }
+
+    public List<Employee> getEmployeesByDepartment(int department) {
+        return employees.values().stream()
+                .filter(employee -> employee.getDepartment() == department)
+                .collect(Collectors.toList());
     }
 
     public Employee addEmployee(String firstName, String lastName, int department, int salary) {
